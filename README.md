@@ -40,6 +40,8 @@
 2. 启动开发服务器: `npm run dev`
 3. 构建生产版本: `npm run build`
 
+注意：为了保证依赖的一致性，建议提交 package-lock.json 或 yarn.lock 文件。
+
 ## 使用说明
 
 目前项目处于初始阶段，仅包含基础的Hello World界面。
