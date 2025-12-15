@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "A pure frontend EMV tool",
   "main": "index.js",
+  "type": "module",
   "homepage": "https://[your-github-username].github.io/[your-repo-name]/",
   "scripts": {
     "dev": "vite",

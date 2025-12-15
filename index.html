@@ -1,113 +1,578 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EMV Tool</title>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMV Toolbox</title>
     <style>
-      :root {
-        font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-        line-height: 1.5;
-        font-weight: 400;
-
-        color-scheme: light dark;
-        color: rgba(255, 255, 255, 0.87);
-        background-color: #242424;
-
-        font-synthesis: none;
-        text-rendering: optimizeLegibility;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        -webkit-text-size-adjust: 100%;
-      }
-
-      a {
-        font-weight: 500;
-        color: #646cff;
-        text-decoration: inherit;
-      }
-      a:hover {
-        color: #535bf2;
-      }
-
-      body {
-        margin: 0;
-        display: flex;
-        place-items: center;
-        min-width: 320px;
-        min-height: 100vh;
-      }
-
-      h1 {
-        font-size: 3.2em;
-        line-height: 1.1;
-      }
-
-      #app {
-        max-width: 1280px;
-        margin: 0 auto;
-        padding: 2rem;
-        text-align: center;
-      }
-
-      .card {
-        padding: 2em;
-      }
-
-      button {
-        border-radius: 8px;
-        border: 1px solid transparent;
-        padding: 0.6em 1.2em;
-        font-size: 1em;
-        font-weight: 500;
-        font-family: inherit;
-        background-color: #1a1a1a;
-        cursor: pointer;
-        transition: border-color 0.25s;
-      }
-      button:hover {
-        border-color: #646cff;
-      }
-      button:focus,
-      button:focus-visible {
-        outline: 4px auto -webkit-focus-ring-color;
-      }
-
-      @media (prefers-color-scheme: light) {
-        :root {
-          color: #213547;
-          background-color: #ffffff;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", Consolas, monospace;
         }
-        a:hover {
-          color: #747bff;
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
         }
-        button {
-          background-color: #f9f9f9;
+
+        /* Top Navigation */
+        .header {
+            background-color: #3498db; /* Light blue */
+            color: white;
+            padding: 16px 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-      }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 24px auto;
+            padding: 0 16px;
+        }
+
+        /* Tab Container */
+        .tabs {
+            display: flex;
+            background-color: white;
+            border-radius: 8px 8px 0 0;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* Tab Buttons */
+        .tab-btn {
+            padding: 12px 24px;
+            background-color: #e9f4fc; /* Very light blue */
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            flex: 1;
+            text-align: center;
+            color: #3498db; /* Blue text */
+        }
+
+        .tab-btn.active {
+            background-color: #3498db; /* Blue */
+            color: white;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background-color: #d1e8f9; /* Lighter blue */
+        }
+
+        /* Tab Content */
+        .tab-content {
+            background-color: white;
+            padding: 24px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            min-height: 500px;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 120px;
+            font-family: Consolas, monospace;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        /* Button Styles */
+        .btn-group {
+            margin: 16px 0;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 20px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: #3498db; /* Blue */
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9; /* Darker blue */
+        }
+
+        .btn-secondary {
+            background-color: #6c757d; /* Gray */
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268; /* Darker gray */
+        }
+
+        /* Output Area */
+        .output-area {
+            margin-top: 20px;
+            padding: 16px;
+            background-color: #f8f9fa; /* Very light gray */
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            min-height: 180px;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .tab-btn {
+                padding: 10px 12px;
+                font-size: 12px;
+            }
+
+            .container {
+                margin: 16px auto;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
     </style>
-  </head>
-  <body>
-    <div id="app">
-      <div>
-        <h1>EMV 工具</h1>
-        <div class="card">
-          <button id="counter" type="button">点击计数: 0</button>
-        </div>
-        <p class="read-the-docs">
-          这是一个纯前端的 EMV 工具
-        </p>
-      </div>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <div class="header">
+        <h1>EMV Toolbox</h1>
     </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Tab Buttons -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="tlv">TLV Parser</button>
+            <button class="tab-btn" data-tab="bit">Bit Parser</button>
+            <button class="tab-btn" data-tab="string">String Tools</button>
+            <button class="tab-btn" data-tab="algorithm">Algorithms</button>
+            <button class="tab-btn" data-tab="oda">ODA Calculator</button>
+        </div>
+
+        <!-- TLV Parser Tab -->
+        <div class="tab-content active" id="tlv">
+            <div class="form-group">
+                <label for="tlv-input">TLV Data (Hex Format)</label>
+                <textarea id="tlv-input" placeholder="Enter TLV hex string, e.g.: 9F26081234567890ABCDEF129F370412345678"></textarea>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" id="tlv-parse">Parse TLV</button>
+                <button class="btn btn-secondary" id="tlv-clear">Clear</button>
+                <button class="btn btn-secondary" id="tlv-sample">Sample</button>
+            </div>
+            <div class="form-group">
+                <label>Parsing Result</label>
+                <div class="output-area" id="tlv-output"></div>
+            </div>
+        </div>
+
+        <!-- Bit Parser Tab -->
+        <div class="tab-content" id="bit">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="bit-tag">Tag (Hex)</label>
+                    <input type="text" id="bit-tag" placeholder="e.g.: 9F36">
+                </div>
+                <div class="form-group">
+                    <label for="bit-value">Value (Hex)</label>
+                    <input type="text" id="bit-value" placeholder="e.g.: 0001">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="bit-value-full">Value Details (Hex)</label>
+                <textarea id="bit-value-full" placeholder="Enter full hex value, e.g.: 0001"></textarea>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" id="bit-parse">Parse Bits</button>
+                <button class="btn btn-secondary" id="bit-clear">Clear</button>
+            </div>
+            <div class="form-group">
+                <label>Bit Parsing Result</label>
+                <div class="output-area" id="bit-output"></div>
+            </div>
+        </div>
+
+        <!-- String Tools Tab -->
+        <div class="tab-content" id="string">
+            <div class="form-group">
+                <label for="string-input">Input Text</label>
+                <textarea id="string-input" placeholder="Enter text to process"></textarea>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" id="string-to-hex">To Hex</button>
+                <button class="btn btn-primary" id="hex-to-string">Hex to String</button>
+                <button class="btn btn-primary" id="string-to-ascii">To ASCII</button>
+                <button class="btn btn-primary" id="string-remove-space">Remove Spaces</button>
+                <button class="btn btn-primary" id="string-remove-enter">Remove Line Breaks</button>
+                <button class="btn btn-secondary" id="string-clear">Clear</button>
+            </div>
+            <div class="form-group">
+                <label>Processing Result</label>
+                <div class="output-area" id="string-output"></div>
+            </div>
+        </div>
+
+        <!-- Algorithms Tab -->
+        <div class="tab-content" id="algorithm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="algo-input1">Input Data 1</label>
+                    <input type="text" id="algo-input1" placeholder="Enter first data">
+                </div>
+                <div class="form-group">
+                    <label for="algo-input2">Input Data 2</label>
+                    <input type="text" id="algo-input2" placeholder="Enter second data">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="algo-textarea">Detailed Data</label>
+                <textarea id="algo-textarea" placeholder="Enter detailed data"></textarea>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" id="algo-sha1">SHA1</button>
+                <button class="btn btn-primary" id="algo-md5">MD5</button>
+                <button class="btn btn-primary" id="algo-crc">CRC</button>
+                <button class="btn btn-primary" id="algo-base64-encode">Base64 Encode</button>
+                <button class="btn btn-primary" id="algo-base64-decode">Base64 Decode</button>
+                <button class="btn btn-secondary" id="algo-clear">Clear</button>
+            </div>
+            <div class="form-group">
+                <label>Calculation Result</label>
+                <div class="output-area" id="algo-output"></div>
+            </div>
+        </div>
+
+        <!-- ODA Calculator Tab -->
+        <div class="tab-content" id="oda">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="oda-data1">Data 1 (PAN)</label>
+                    <input type="text" id="oda-data1" placeholder="Enter card number (PAN)">
+                </div>
+                <div class="form-group">
+                    <label for="oda-data2">Data 2 (Amount)</label>
+                    <input type="text" id="oda-data2" placeholder="Enter transaction amount (Hex)">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="oda-data3">Data 3 (Date)</label>
+                    <input type="text" id="oda-data3" placeholder="Enter transaction date (MMDD)">
+                </div>
+                <div class="form-group">
+                    <label for="oda-data4">Data 4 (Random)</label>
+                    <input type="text" id="oda-data4" placeholder="Enter random number (Hex)">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="oda-extra">Additional Parameters (Optional)</label>
+                <textarea id="oda-extra" placeholder="Enter other parameters needed for ODA calculation"></textarea>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" id="oda-calc">Calculate ODA</button>
+                <button class="btn btn-secondary" id="oda-clear">Clear</button>
+            </div>
+            <div class="form-group">
+                <label>ODA Calculation Result</label>
+                <div class="output-area" id="oda-output"></div>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
-      const counter = document.getElementById('counter')
-      let count = 0
-      
-      counter.addEventListener('click', () => {
-        count++
-        counter.textContent = `点击计数: ${count}`
-      })
+        // Import TLV parser
+        import { parseTLV, formatTLVTree } from './src/utils/tlvParser.js';
+
+        // Tab switching logic
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove all active states
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                
+                // Activate current tab
+                btn.classList.add('active');
+                const tabId = btn.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Clear button general logic
+        function bindClearBtn(btnId, inputIds) {
+            document.getElementById(btnId).addEventListener('click', () => {
+                inputIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT') {
+                        el.value = '';
+                    } else {
+                        el.textContent = '';
+                    }
+                });
+            });
+        }
+
+        // Bind clear buttons for each module
+        bindClearBtn('tlv-clear', ['tlv-input', 'tlv-output']);
+        bindClearBtn('bit-clear', ['bit-tag', 'bit-value', 'bit-value-full', 'bit-output']);
+        bindClearBtn('string-clear', ['string-input', 'string-output']);
+        bindClearBtn('algo-clear', ['algo-input1', 'algo-input2', 'algo-textarea', 'algo-output']);
+        bindClearBtn('oda-clear', ['oda-data1', 'oda-data2', 'oda-data3', 'oda-data4', 'oda-extra', 'oda-output']);
+
+        // TLV parsing function
+        document.getElementById('tlv-parse').addEventListener('click', () => {
+            const tlvStr = document.getElementById('tlv-input').value.trim();
+            if (!tlvStr) {
+                document.getElementById('tlv-output').textContent = 'Please enter TLV format data';
+                return;
+            }
+            
+            try {
+                // Clean input data
+                const cleanHex = tlvStr.replace(/[^0-9A-Fa-f]/g, '');
+                
+                if (cleanHex.length === 0) {
+                    throw new Error("Please enter valid hexadecimal data");
+                }
+                
+                if (cleanHex.length % 2 !== 0) {
+                    throw new Error("Hexadecimal data length is incorrect, please check input");
+                }
+                
+                // Parse TLV data
+                const parsed = parseTLV(cleanHex);
+                const formatted = formatTLVTree(parsed);
+                
+                document.getElementById('tlv-output').textContent = formatted;
+            } catch (error) {
+                document.getElementById('tlv-output').textContent = `Parsing error: ${error.message}`;
+            }
+        });
+
+        // TLV sample data
+        document.getElementById('tlv-sample').addEventListener('click', () => {
+            document.getElementById('tlv-input').value = "9F0206010203040506BF0C05C101019F0306000000000000";
+        });
+
+        // String processing functions
+        document.getElementById('string-to-hex').addEventListener('click', () => {
+            const str = document.getElementById('string-input').value;
+            try {
+                let hex = '';
+                for (let i = 0; i < str.length; i++) {
+                    const hexChar = str.charCodeAt(i).toString(16).padStart(2, '0');
+                    hex += hexChar;
+                }
+                document.getElementById('string-output').textContent = hex.toUpperCase();
+            } catch (e) {
+                document.getElementById('string-output').textContent = `Error: ${e.message}`;
+            }
+        });
+
+        document.getElementById('hex-to-string').addEventListener('click', () => {
+            const hexStr = document.getElementById('string-input').value.trim();
+            try {
+                // Remove non-hex characters
+                const cleanHex = hexStr.replace(/[^0-9a-fA-F]/g, '');
+                if (cleanHex.length % 2 !== 0) {
+                    throw new Error('Hex string length must be even');
+                }
+                let str = '';
+                for (let i = 0; i < cleanHex.length; i += 2) {
+                    const byte = cleanHex.substr(i, 2);
+                    str += String.fromCharCode(parseInt(byte, 16));
+                }
+                document.getElementById('string-output').textContent = str;
+            } catch (e) {
+                document.getElementById('string-output').textContent = `Error: ${e.message}`;
+            }
+        });
+
+        document.getElementById('string-to-ascii').addEventListener('click', () => {
+            const str = document.getElementById('string-input').value;
+            try {
+                let ascii = '';
+                for (let i = 0; i < str.length; i++) {
+                    ascii += str.charCodeAt(i) + ' ';
+                }
+                document.getElementById('string-output').textContent = ascii.trim();
+            } catch (e) {
+                document.getElementById('string-output').textContent = `Error: ${e.message}`;
+            }
+        });
+
+        document.getElementById('string-remove-space').addEventListener('click', () => {
+            const str = document.getElementById('string-input').value;
+            const result = str.replace(/\s+/g, '');
+            document.getElementById('string-output').textContent = result;
+        });
+
+        document.getElementById('string-remove-enter').addEventListener('click', () => {
+            const str = document.getElementById('string-input').value;
+            const result = str.replace(/[\r\n]/g, '');
+            document.getElementById('string-output').textContent = result;
+        });
+
+        // Bit parsing button click event (placeholder)
+        document.getElementById('bit-parse').addEventListener('click', () => {
+            const tag = document.getElementById('bit-tag').value.trim();
+            const value = document.getElementById('bit-value').value.trim() || document.getElementById('bit-value-full').value.trim();
+            if (!tag || !value) {
+                document.getElementById('bit-output').textContent = 'Please enter tag number and tag value';
+                return;
+            }
+            document.getElementById('bit-output').textContent = `Bit parsing result (example):\nTag: ${tag}\nValue: ${value}\nParsing status: Parsing logic to be implemented`;
+        });
+
+        // Algorithm button click events (placeholders)
+        document.getElementById('algo-sha1').addEventListener('click', () => {
+            const data1 = document.getElementById('algo-input1').value.trim();
+            const data2 = document.getElementById('algo-input2').value.trim();
+            const data3 = document.getElementById('algo-textarea').value.trim();
+            document.getElementById('algo-output').textContent = `SHA1 calculation result (example):
+Data 1: ${data1}
+Data 2: ${data2}
+Detailed data: ${data3.substring(0, 20)}...
+Calculation result: Calculation logic to be implemented`;
+        });
+
+        document.getElementById('algo-md5').addEventListener('click', () => {
+            const data1 = document.getElementById('algo-input1').value.trim();
+            const data2 = document.getElementById('algo-input2').value.trim();
+            const data3 = document.getElementById('algo-textarea').value.trim();
+            document.getElementById('algo-output').textContent = `MD5 calculation result (example):
+Data 1: ${data1}
+Data 2: ${data2}
+Detailed data: ${data3.substring(0, 20)}...
+Calculation result: Calculation logic to be implemented`;
+        });
+
+        document.getElementById('algo-crc').addEventListener('click', () => {
+            const data1 = document.getElementById('algo-input1').value.trim();
+            const data2 = document.getElementById('algo-input2').value.trim();
+            const data3 = document.getElementById('algo-textarea').value.trim();
+            document.getElementById('algo-output').textContent = `CRC calculation result (example):
+Data 1: ${data1}
+Data 2: ${data2}
+Detailed data: ${data3.substring(0, 20)}...
+Calculation result: Calculation logic to be implemented`;
+        });
+
+        document.getElementById('algo-base64-encode').addEventListener('click', () => {
+            const data1 = document.getElementById('algo-input1').value.trim();
+            const data2 = document.getElementById('algo-input2').value.trim();
+            const data3 = document.getElementById('algo-textarea').value.trim();
+            const combinedData = data1 + data2 + data3;
+            try {
+                const encoded = btoa(combinedData);
+                document.getElementById('algo-output').textContent = encoded;
+            } catch (e) {
+                document.getElementById('algo-output').textContent = `Base64 encoding error: ${e.message}`;
+            }
+        });
+
+        document.getElementById('algo-base64-decode').addEventListener('click', () => {
+            const data1 = document.getElementById('algo-input1').value.trim();
+            const data2 = document.getElementById('algo-input2').value.trim();
+            const data3 = document.getElementById('algo-textarea').value.trim();
+            const combinedData = data1 + data2 + data3;
+            try {
+                const decoded = atob(combinedData);
+                document.getElementById('algo-output').textContent = decoded;
+            } catch (e) {
+                document.getElementById('algo-output').textContent = `Base64 decoding error: ${e.message}`;
+            }
+        });
+
+        // ODA calculation button click event (placeholder)
+        document.getElementById('oda-calc').addEventListener('click', () => {
+            const data1 = document.getElementById('oda-data1').value.trim();
+            const data2 = document.getElementById('oda-data2').value.trim();
+            const data3 = document.getElementById('oda-data3').value.trim();
+            const data4 = document.getElementById('oda-data4').value.trim();
+            if (!data1 || !data2 || !data3 || !data4) {
+                document.getElementById('oda-output').textContent = 'Please fill in all required ODA calculation parameters';
+                return;
+            }
+            document.getElementById('oda-output').textContent = `ODA calculation result (example):
+PAN: ${data1}
+Transaction amount: ${data2}
+Transaction date: ${data3}
+Random number: ${data4}
+Calculation result: Calculation logic to be implemented`;
+        });
     </script>
-  </body>
+</body>
 </html>
