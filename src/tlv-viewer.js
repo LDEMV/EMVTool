@@ -11,17 +11,34 @@ export class TLVViewer {
   init() {
     this.container.innerHTML = `
       <div class="tlv-viewer">
-        <h2>TLV 解析器</h2>
         <div class="input-section">
-          <label for="tlvInput">输入十六进制 TLV 数据:</label>
-          <textarea id="tlvInput" placeholder="例如: 9F020600000000010082023900"></textarea>
+          <div class="form-group">
+            <label for="tlvInput">TLV Data (Hex Format)</label>
+            <textarea id="tlvInput" placeholder="Enter TLV hex string, e.g.: 9F26081234567890ABCDEF129F370412345678"></textarea>
+          </div>
+          
+          <!-- Card Scheme Selection -->
+          <div class="scheme-selection" style="display: flex; align-items: center; gap: 16px; margin: 16px 0;">
+            <label for="cardScheme" style="margin-bottom: 0;">Card Scheme</label>
+            <select id="cardScheme" class="form-control" style="max-width: 250px; height: 32px; padding: 4px 12px;">
+              <option value="EMV">EMV</option>
+              <option value="VISA">VISA</option>
+              <option value="MASTERCARD">Mastercard</option>
+              <option value="JCB">JCB</option>
+              <option value="UNIONPAY">UnionPay</option>
+              <option value="DISCOVER">Discover</option>
+              <option value="AMEX">AMEX</option>
+            </select>
+          </div>
+          
           <div class="button-group">
-            <button id="parseBtn">解析</button>
-            <button id="sampleBtn">加载示例</button>
+            <button id="parseBtn">Parse TLV</button>
+            <button id="clearBtn">Clear</button>
+            <button id="sampleBtn">Sample</button>
           </div>
         </div>
         <div class="output-section">
-          <h3>解析结果:</h3>
+          <h3>Parsing Result</h3>
           <pre id="tlvOutput" class="tree-output"></pre>
         </div>
       </div>
@@ -32,44 +49,62 @@ export class TLVViewer {
 
   bindEvents() {
     const parseBtn = this.container.querySelector('#parseBtn');
+    const clearBtn = this.container.querySelector('#clearBtn');
     const sampleBtn = this.container.querySelector('#sampleBtn');
     const tlvInput = this.container.querySelector('#tlvInput');
     
     parseBtn.addEventListener('click', () => {
-      this.parseAndDisplay(tlvInput.value);
+      const scheme = this.container.querySelector('#cardScheme').value;
+      this.parseAndDisplay(tlvInput.value, scheme);
+    });
+
+    clearBtn.addEventListener('click', () => {
+      tlvInput.value = '';
+      const output = this.container.querySelector('#tlvOutput');
+      output.textContent = '';
     });
 
     sampleBtn.addEventListener('click', () => {
-      // 示例数据包含嵌套结构
-      tlvInput.value = "9F0206010203040506BF0C05C101019F0306000000000000";
-      this.parseAndDisplay(tlvInput.value);
+      // Sample data includes nested structure
+      tlvInput.value = "9F0206010203040506BF0C05C1030102039F0306000000000000";
+      const scheme = this.container.querySelector('#cardScheme').value;
+      this.parseAndDisplay(tlvInput.value, scheme);
     });
   }
 
-  parseAndDisplay(hexData) {
+  parseAndDisplay(hexData, scheme = 'EMV') {
     try {
       // Remove spaces and other non-hex characters
       const cleanHex = hexData.replace(/[^0-9A-Fa-f]/g, '');
       
       if (cleanHex.length === 0) {
-        throw new Error("请输入有效的十六进制数据");
+        throw new Error("Please enter TLV format data");
       }
       
       if (cleanHex.length % 2 !== 0) {
-        throw new Error("十六进制数据长度不正确，请检查输入");
+        throw new Error("Hexadecimal data length is incorrect, please check input");
       }
 
       // Import the parser functions dynamically
       import('./utils/tlvParser.js').then((parserModule) => {
-        const parsed = parserModule.parseTLV(cleanHex);
-        const formatted = parserModule.formatTLVTree(parsed);
-        
-        const output = this.container.querySelector('#tlvOutput');
-        output.textContent = formatted;
+        try {
+          const parsed = parserModule.parseTLV(cleanHex);
+          const formatted = parserModule.formatTLVTree(parsed, scheme);
+          
+          const output = this.container.querySelector('#tlvOutput');
+          output.textContent = formatted;
+        } catch (parseError) {
+          const output = this.container.querySelector('#tlvOutput');
+          output.textContent = `TLV Parsing failed:
+
+Error: ${parseError.message}
+
+Please check your input data.`;
+        }
       });
     } catch (error) {
       const output = this.container.querySelector('#tlvOutput');
-      output.textContent = `解析错误: ${error.message}`;
+      output.textContent = `Pre-parsing validation failed:\n\nError: ${error.message}`;
     }
   }
 }

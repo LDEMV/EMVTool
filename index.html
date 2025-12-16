@@ -20,15 +20,54 @@
 
         /* Top Navigation */
         .header {
-            background-color: #3498db; /* Light blue */
+            background-color: #2353ED; /* Light blue */
             color: white;
             padding: 16px 24px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .header h1 {
             font-size: 20px;
             font-weight: 600;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
         }
 
         /* Main Container */
@@ -45,6 +84,7 @@
             border-radius: 8px 8px 0 0;
             overflow: hidden;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            width: 100%;
         }
 
         /* Tab Buttons */
@@ -58,10 +98,11 @@
             flex: 1;
             text-align: center;
             color: #3498db; /* Blue text */
+            min-width: 0; /* Allow buttons to shrink equally */
         }
 
         .tab-btn.active {
-            background-color: #3498db; /* Blue */
+            background-color: #2353ED; /* Blue */
             color: white;
         }
 
@@ -83,49 +124,41 @@
             display: block;
         }
 
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #495057;
-        }
-
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            font-size: 14px;
-            resize: vertical;
-            min-height: 120px;
-            font-family: Consolas, monospace;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
+        /* Shared form styles */
         .form-row {
             display: flex;
+            flex-wrap: wrap;
             gap: 16px;
-            margin-bottom: 16px;
+            margin-bottom: 15px;
         }
-
-        .form-row .form-group {
+        
+        .form-group {
+            margin-bottom: 15px;
             flex: 1;
-            margin-bottom: 0;
+            min-width: 200px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
         }
 
-        /* Button Styles */
+        /* Button groups */
         .btn-group {
             margin: 16px 0;
             display: flex;
@@ -143,12 +176,12 @@
         }
 
         .btn-primary {
-            background-color: #3498db; /* Blue */
+            background-color: #0d93ec; /* Blue */
             color: white;
         }
 
         .btn-primary:hover {
-            background-color: #2980b9; /* Darker blue */
+            background-color: #2353ED; /* Darker blue */
         }
 
         .btn-secondary {
@@ -160,11 +193,69 @@
             background-color: #5a6268; /* Darker gray */
         }
 
-        /* Output Area */
+        /* Output areas */
         .output-area {
+            margin-top: 10px;
+            padding: 16px;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            min-height: 50px;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        /* TLV Viewer Styles */
+        .tlv-viewer .input-section {
+            margin-bottom: 20px;
+        }
+
+        .tlv-viewer .button-group {
+            margin: 16px 0;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tlv-viewer .button-group button {
+            padding: 8px 20px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .tlv-viewer .button-group button:first-child {
+            background-color: #24ade4; /* Blue */
+            color: white;
+        }
+
+        .tlv-viewer .button-group button:first-child:hover {
+            background-color: #2353ED; /* Darker blue */
+        }
+
+        .tlv-viewer .button-group button:not(:first-child) {
+            background-color: #6c757d; /* Gray */
+            color: white;
+        }
+
+        .tlv-viewer .button-group button:not(:first-child):hover {
+            background-color: #5a6268; /* Darker gray */
+        }
+
+        .tlv-viewer .output-section h3 {
+            margin-bottom: 8px;
+        }
+
+        .tree-output {
             margin-top: 20px;
             padding: 16px;
-            background-color: #f8f9fa; /* Very light gray */
+            background-color: #f8f9fa;
             border: 1px solid #e9ecef;
             border-radius: 4px;
             min-height: 180px;
@@ -216,24 +307,12 @@
             <button class="tab-btn" data-tab="bit">Bit Parser</button>
             <button class="tab-btn" data-tab="string">String Tools</button>
             <button class="tab-btn" data-tab="algorithm">Algorithms</button>
-            <button class="tab-btn" data-tab="oda">ODA Calculator</button>
         </div>
 
         <!-- TLV Parser Tab -->
         <div class="tab-content active" id="tlv">
-            <div class="form-group">
-                <label for="tlv-input">TLV Data (Hex Format)</label>
-                <textarea id="tlv-input" placeholder="Enter TLV hex string, e.g.: 9F26081234567890ABCDEF129F370412345678"></textarea>
-            </div>
-            <div class="btn-group">
-                <button class="btn btn-primary" id="tlv-parse">Parse TLV</button>
-                <button class="btn btn-secondary" id="tlv-clear">Clear</button>
-                <button class="btn btn-secondary" id="tlv-sample">Sample</button>
-            </div>
-            <div class="form-group">
-                <label>Parsing Result</label>
-                <div class="output-area" id="tlv-output"></div>
-            </div>
+            <!-- TLV Viewer Component -->
+            <div id="tlv-viewer-container"></div>
         </div>
 
         <!-- Bit Parser Tab -->
@@ -312,46 +391,15 @@
             </div>
         </div>
 
-        <!-- ODA Calculator Tab -->
-        <div class="tab-content" id="oda">
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="oda-data1">Data 1 (PAN)</label>
-                    <input type="text" id="oda-data1" placeholder="Enter card number (PAN)">
-                </div>
-                <div class="form-group">
-                    <label for="oda-data2">Data 2 (Amount)</label>
-                    <input type="text" id="oda-data2" placeholder="Enter transaction amount (Hex)">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="oda-data3">Data 3 (Date)</label>
-                    <input type="text" id="oda-data3" placeholder="Enter transaction date (MMDD)">
-                </div>
-                <div class="form-group">
-                    <label for="oda-data4">Data 4 (Random)</label>
-                    <input type="text" id="oda-data4" placeholder="Enter random number (Hex)">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="oda-extra">Additional Parameters (Optional)</label>
-                <textarea id="oda-extra" placeholder="Enter other parameters needed for ODA calculation"></textarea>
-            </div>
-            <div class="btn-group">
-                <button class="btn btn-primary" id="oda-calc">Calculate ODA</button>
-                <button class="btn btn-secondary" id="oda-clear">Clear</button>
-            </div>
-            <div class="form-group">
-                <label>ODA Calculation Result</label>
-                <div class="output-area" id="oda-output"></div>
-            </div>
-        </div>
+
     </div>
 
     <script type="module">
-        // Import TLV parser
-        import { parseTLV, formatTLVTree } from './src/utils/tlvParser.js';
+        // Import TLV viewer component
+        import { TLVViewer } from './src/tlv-viewer.js';
+
+        // Initialize TLV Viewer
+        const tlvViewer = new TLVViewer('tlv-viewer-container');
 
         // Tab switching logic
         const tabBtns = document.querySelectorAll('.tab-btn');
@@ -385,46 +433,9 @@
         }
 
         // Bind clear buttons for each module
-        bindClearBtn('tlv-clear', ['tlv-input', 'tlv-output']);
         bindClearBtn('bit-clear', ['bit-tag', 'bit-value', 'bit-value-full', 'bit-output']);
         bindClearBtn('string-clear', ['string-input', 'string-output']);
         bindClearBtn('algo-clear', ['algo-input1', 'algo-input2', 'algo-textarea', 'algo-output']);
-        bindClearBtn('oda-clear', ['oda-data1', 'oda-data2', 'oda-data3', 'oda-data4', 'oda-extra', 'oda-output']);
-
-        // TLV parsing function
-        document.getElementById('tlv-parse').addEventListener('click', () => {
-            const tlvStr = document.getElementById('tlv-input').value.trim();
-            if (!tlvStr) {
-                document.getElementById('tlv-output').textContent = 'Please enter TLV format data';
-                return;
-            }
-            
-            try {
-                // Clean input data
-                const cleanHex = tlvStr.replace(/[^0-9A-Fa-f]/g, '');
-                
-                if (cleanHex.length === 0) {
-                    throw new Error("Please enter valid hexadecimal data");
-                }
-                
-                if (cleanHex.length % 2 !== 0) {
-                    throw new Error("Hexadecimal data length is incorrect, please check input");
-                }
-                
-                // Parse TLV data
-                const parsed = parseTLV(cleanHex);
-                const formatted = formatTLVTree(parsed);
-                
-                document.getElementById('tlv-output').textContent = formatted;
-            } catch (error) {
-                document.getElementById('tlv-output').textContent = `Parsing error: ${error.message}`;
-            }
-        });
-
-        // TLV sample data
-        document.getElementById('tlv-sample').addEventListener('click', () => {
-            document.getElementById('tlv-input').value = "9F0206010203040506BF0C05C101019F0306000000000000";
-        });
 
         // String processing functions
         document.getElementById('string-to-hex').addEventListener('click', () => {
@@ -556,23 +567,11 @@ Calculation result: Calculation logic to be implemented`;
             }
         });
 
-        // ODA calculation button click event (placeholder)
-        document.getElementById('oda-calc').addEventListener('click', () => {
-            const data1 = document.getElementById('oda-data1').value.trim();
-            const data2 = document.getElementById('oda-data2').value.trim();
-            const data3 = document.getElementById('oda-data3').value.trim();
-            const data4 = document.getElementById('oda-data4').value.trim();
-            if (!data1 || !data2 || !data3 || !data4) {
-                document.getElementById('oda-output').textContent = 'Please fill in all required ODA calculation parameters';
-                return;
-            }
-            document.getElementById('oda-output').textContent = `ODA calculation result (example):
-PAN: ${data1}
-Transaction amount: ${data2}
-Transaction date: ${data3}
-Random number: ${data4}
-Calculation result: Calculation logic to be implemented`;
-        });
     </script>
+    
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 20px; color: #666; font-size: 14px;">
+        <p>© 2025 landicorp</p>
+    </footer>
 </body>
 </html>
