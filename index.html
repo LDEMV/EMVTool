@@ -343,22 +343,7 @@
 
         <!-- String Tools Tab -->
         <div class="tab-content" id="string">
-            <div class="form-group">
-                <label for="string-input">Input Text</label>
-                <textarea id="string-input" placeholder="Enter text to process"></textarea>
-            </div>
-            <div class="btn-group">
-                <button class="btn btn-primary" id="string-to-hex">To Hex</button>
-                <button class="btn btn-primary" id="hex-to-string">Hex to String</button>
-                <button class="btn btn-primary" id="string-to-ascii">To ASCII</button>
-                <button class="btn btn-primary" id="string-remove-space">Remove Spaces</button>
-                <button class="btn btn-primary" id="string-remove-enter">Remove Line Breaks</button>
-                <button class="btn btn-secondary" id="string-clear">Clear</button>
-            </div>
-            <div class="form-group">
-                <label>Processing Result</label>
-                <div class="output-area" id="string-output"></div>
-            </div>
+            <div id="string-tools-container"></div>
         </div>
 
         <!-- Algorithms Tab -->
@@ -395,11 +380,15 @@
     </div>
 
     <script type="module">
-        // Import TLV viewer component
+        // Import TLV viewer and String Tools components
         import { TLVViewer } from './src/tlv-viewer.js';
+        import { StringTools } from './src/string-tools.js';
 
         // Initialize TLV Viewer
         const tlvViewer = new TLVViewer('tlv-viewer-container');
+        
+        // Initialize String Tools
+        const stringTools = new StringTools('string-tools-container');
 
         // Tab switching logic
         const tabBtns = document.querySelectorAll('.tab-btn');
@@ -434,67 +423,7 @@
 
         // Bind clear buttons for each module
         bindClearBtn('bit-clear', ['bit-tag', 'bit-value', 'bit-value-full', 'bit-output']);
-        bindClearBtn('string-clear', ['string-input', 'string-output']);
         bindClearBtn('algo-clear', ['algo-input1', 'algo-input2', 'algo-textarea', 'algo-output']);
-
-        // String processing functions
-        document.getElementById('string-to-hex').addEventListener('click', () => {
-            const str = document.getElementById('string-input').value;
-            try {
-                let hex = '';
-                for (let i = 0; i < str.length; i++) {
-                    const hexChar = str.charCodeAt(i).toString(16).padStart(2, '0');
-                    hex += hexChar;
-                }
-                document.getElementById('string-output').textContent = hex.toUpperCase();
-            } catch (e) {
-                document.getElementById('string-output').textContent = `Error: ${e.message}`;
-            }
-        });
-
-        document.getElementById('hex-to-string').addEventListener('click', () => {
-            const hexStr = document.getElementById('string-input').value.trim();
-            try {
-                // Remove non-hex characters
-                const cleanHex = hexStr.replace(/[^0-9a-fA-F]/g, '');
-                if (cleanHex.length % 2 !== 0) {
-                    throw new Error('Hex string length must be even');
-                }
-                let str = '';
-                for (let i = 0; i < cleanHex.length; i += 2) {
-                    const byte = cleanHex.substr(i, 2);
-                    str += String.fromCharCode(parseInt(byte, 16));
-                }
-                document.getElementById('string-output').textContent = str;
-            } catch (e) {
-                document.getElementById('string-output').textContent = `Error: ${e.message}`;
-            }
-        });
-
-        document.getElementById('string-to-ascii').addEventListener('click', () => {
-            const str = document.getElementById('string-input').value;
-            try {
-                let ascii = '';
-                for (let i = 0; i < str.length; i++) {
-                    ascii += str.charCodeAt(i) + ' ';
-                }
-                document.getElementById('string-output').textContent = ascii.trim();
-            } catch (e) {
-                document.getElementById('string-output').textContent = `Error: ${e.message}`;
-            }
-        });
-
-        document.getElementById('string-remove-space').addEventListener('click', () => {
-            const str = document.getElementById('string-input').value;
-            const result = str.replace(/\s+/g, '');
-            document.getElementById('string-output').textContent = result;
-        });
-
-        document.getElementById('string-remove-enter').addEventListener('click', () => {
-            const str = document.getElementById('string-input').value;
-            const result = str.replace(/[\r\n]/g, '');
-            document.getElementById('string-output').textContent = result;
-        });
 
         // Bit parsing button click event (placeholder)
         document.getElementById('bit-parse').addEventListener('click', () => {
