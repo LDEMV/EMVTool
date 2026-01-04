@@ -23,12 +23,17 @@ export class StringTools {
           <button class="btn btn-primary" id="string-tolower">ToLower</button>
           <button class="btn btn-primary" id="string-add-space">Add Space</button>
           <button class="btn btn-primary" id="string-add-slashx">Add '\\x'</button>
+          <button class="btn btn-primary" id="string-remove-slashx">Remove '\\x'</button>
           <button class="btn btn-secondary" id="string-clear">Clear</button>
         </div>
         <div class="form-group">
           <label>Processing Result</label>
           <div class="output-area" id="string-output"></div>
           <div id="string-output-stats" style="margin-top: 5px; font-size: 14px; color: #666;">Result Count: 0 bytes (0x00)</div>
+          <div class="output-controls" style="margin-top: 10px;">
+            <button class="btn btn-primary" id="copy-result-to-input" style="margin-right: 10px;">Copy to Input</button>
+            <button class="btn btn-primary" id="copy-result-to-clipboard">Copy Result</button>
+          </div>
         </div>
       </div>
     `;
@@ -78,6 +83,36 @@ export class StringTools {
     
     // Update output stats after a delay to allow DOM updates
     setTimeout(updateOutputStats, 0);
+
+    // Copy Result to Input button functionality
+    this.container.querySelector('#copy-result-to-input').addEventListener('click', () => {
+      const outputText = stringOutput.textContent || stringOutput.innerText;
+      stringInput.value = outputText;
+      
+      // Update input stats
+      const effectiveText = outputText.replace(/[\s\\x]/g, '');
+      const byteLength = effectiveText.length / 2;
+      const isHalfByte = effectiveText.length % 2 !== 0;
+      const byteDisplay = isHalfByte ? (effectiveText.length / 2).toFixed(1) : Math.floor(byteLength);
+      const hexValue = Math.floor(byteLength).toString(16).toUpperCase().padStart(2, '0');
+      stringInputStats.textContent = `Entered Count: ${byteDisplay} bytes (0x${hexValue})`;
+    });
+
+    // Copy Result to Clipboard button functionality
+    this.container.querySelector('#copy-result-to-clipboard').addEventListener('click', () => {
+      const outputText = stringOutput.textContent || stringOutput.innerText;
+      navigator.clipboard.writeText(outputText).then(() => {
+        // Show user feedback
+        const originalText = this.container.querySelector('#copy-result-to-clipboard').textContent;
+        this.container.querySelector('#copy-result-to-clipboard').textContent = 'Copied!';
+        setTimeout(() => {
+          this.container.querySelector('#copy-result-to-clipboard').textContent = originalText;
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy text: ', err);
+        alert('Failed to copy text to clipboard');
+      });
+    });
 
     // Basic string processing functions
     this.container.querySelector('#hex-to-utf8').addEventListener('click', () => {
@@ -140,8 +175,8 @@ export class StringTools {
     this.container.querySelector('#string-tolower').addEventListener('click', () => {
       const str = stringInput.value;
       try {
-        // Convert to lowercase
-        const result = str.toLowerCase();
+        // Remove spaces and line breaks, then convert to lowercase
+        const result = str.replace(/[\s\r\n]+/g, '').toLowerCase();
         stringOutput.textContent = result;
         updateOutputStats();
       } catch (e) {
@@ -172,11 +207,11 @@ export class StringTools {
         
         // Check if it's hex format (contains only hex characters)
         if (/^[0-9a-fA-F]*$/.test(cleaned)) {
-          // Add \x prefix every 2 characters
-          const withSlashes = cleaned.match(/.{1,2}/g)?.map(part => '\\x' + part).join(' ') || '';
+          // Add \x prefix every 2 characters without spaces
+          const withSlashes = cleaned.match(/.{1,2}/g)?.map(part => '\\x' + part).join('') || '';
           stringOutput.textContent = withSlashes;
         } else {
-          // If not hex, convert to hex first then add \x
+          // If not hex, convert to hex first then add \x without spaces
           let hex = '';
           for (let i = 0; i < cleaned.length; i++) {
             const hexChar = cleaned.charCodeAt(i).toString(16).padStart(2, '0');
@@ -184,6 +219,19 @@ export class StringTools {
           }
           stringOutput.textContent = hex.toUpperCase();
         }
+        updateOutputStats();
+      } catch (e) {
+        stringOutput.textContent = `Error: ${e.message}`;
+        updateOutputStats();
+      }
+    });
+
+    this.container.querySelector('#string-remove-slashx').addEventListener('click', () => {
+      const str = stringInput.value;
+      try {
+        // Remove \x prefixes and keep only hex values
+        const result = str.replace(/\\x/g, '');
+        stringOutput.textContent = result;
         updateOutputStats();
       } catch (e) {
         stringOutput.textContent = `Error: ${e.message}`;
