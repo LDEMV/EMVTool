@@ -348,34 +348,8 @@
 
         <!-- Algorithms Tab -->
         <div class="tab-content" id="algorithm">
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="algo-input1">Input Data 1</label>
-                    <input type="text" id="algo-input1" placeholder="Enter first data">
-                </div>
-                <div class="form-group">
-                    <label for="algo-input2">Input Data 2</label>
-                    <input type="text" id="algo-input2" placeholder="Enter second data">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="algo-textarea">Detailed Data</label>
-                <textarea id="algo-textarea" placeholder="Enter detailed data"></textarea>
-            </div>
-            <div class="btn-group">
-                <button class="btn btn-primary" id="algo-sha1">SHA1</button>
-                <button class="btn btn-primary" id="algo-md5">MD5</button>
-                <button class="btn btn-primary" id="algo-crc">CRC</button>
-                <button class="btn btn-primary" id="algo-base64-encode">Base64 Encode</button>
-                <button class="btn btn-primary" id="algo-base64-decode">Base64 Decode</button>
-                <button class="btn btn-secondary" id="algo-clear">Clear</button>
-            </div>
-            <div class="form-group">
-                <label>Calculation Result</label>
-                <div class="output-area" id="algo-output"></div>
-            </div>
+            <div id="algorithms-tool-container"></div>
         </div>
-
 
     </div>
 
@@ -383,12 +357,16 @@
         // Import TLV viewer and String Tools components
         import { TLVViewer } from './src/tlv-viewer.js';
         import { StringTools } from './src/string-tools.js';
+        import { AlgorithmsTool } from './src/algorithms/algorithms-tool.js';
 
         // Initialize TLV Viewer
         const tlvViewer = new TLVViewer('tlv-viewer-container');
         
         // Initialize String Tools
         const stringTools = new StringTools('string-tools-container');
+
+        // Initialize Algorithms Tool
+        const algorithmsTool = new AlgorithmsTool('algorithms-tool-container');
 
         // Tab switching logic
         const tabBtns = document.querySelectorAll('.tab-btn');
@@ -423,7 +401,6 @@
 
         // Bind clear buttons for each module
         bindClearBtn('bit-clear', ['bit-tag', 'bit-value', 'bit-value-full', 'bit-output']);
-        bindClearBtn('algo-clear', ['algo-input1', 'algo-input2', 'algo-textarea', 'algo-output']);
 
         // Bit parsing button click event (placeholder)
         document.getElementById('bit-parse').addEventListener('click', () => {
@@ -435,67 +412,6 @@
             }
             document.getElementById('bit-output').textContent = `Bit parsing result (example):\nTag: ${tag}\nValue: ${value}\nParsing status: Parsing logic to be implemented`;
         });
-
-        // Algorithm button click events (placeholders)
-        document.getElementById('algo-sha1').addEventListener('click', () => {
-            const data1 = document.getElementById('algo-input1').value.trim();
-            const data2 = document.getElementById('algo-input2').value.trim();
-            const data3 = document.getElementById('algo-textarea').value.trim();
-            document.getElementById('algo-output').textContent = `SHA1 calculation result (example):
-Data 1: ${data1}
-Data 2: ${data2}
-Detailed data: ${data3.substring(0, 20)}...
-Calculation result: Calculation logic to be implemented`;
-        });
-
-        document.getElementById('algo-md5').addEventListener('click', () => {
-            const data1 = document.getElementById('algo-input1').value.trim();
-            const data2 = document.getElementById('algo-input2').value.trim();
-            const data3 = document.getElementById('algo-textarea').value.trim();
-            document.getElementById('algo-output').textContent = `MD5 calculation result (example):
-Data 1: ${data1}
-Data 2: ${data2}
-Detailed data: ${data3.substring(0, 20)}...
-Calculation result: Calculation logic to be implemented`;
-        });
-
-        document.getElementById('algo-crc').addEventListener('click', () => {
-            const data1 = document.getElementById('algo-input1').value.trim();
-            const data2 = document.getElementById('algo-input2').value.trim();
-            const data3 = document.getElementById('algo-textarea').value.trim();
-            document.getElementById('algo-output').textContent = `CRC calculation result (example):
-Data 1: ${data1}
-Data 2: ${data2}
-Detailed data: ${data3.substring(0, 20)}...
-Calculation result: Calculation logic to be implemented`;
-        });
-
-        document.getElementById('algo-base64-encode').addEventListener('click', () => {
-            const data1 = document.getElementById('algo-input1').value.trim();
-            const data2 = document.getElementById('algo-input2').value.trim();
-            const data3 = document.getElementById('algo-textarea').value.trim();
-            const combinedData = data1 + data2 + data3;
-            try {
-                const encoded = btoa(combinedData);
-                document.getElementById('algo-output').textContent = encoded;
-            } catch (e) {
-                document.getElementById('algo-output').textContent = `Base64 encoding error: ${e.message}`;
-            }
-        });
-
-        document.getElementById('algo-base64-decode').addEventListener('click', () => {
-            const data1 = document.getElementById('algo-input1').value.trim();
-            const data2 = document.getElementById('algo-input2').value.trim();
-            const data3 = document.getElementById('algo-textarea').value.trim();
-            const combinedData = data1 + data2 + data3;
-            try {
-                const decoded = atob(combinedData);
-                document.getElementById('algo-output').textContent = decoded;
-            } catch (e) {
-                document.getElementById('algo-output').textContent = `Base64 decoding error: ${e.message}`;
-            }
-        });
-
     </script>
     
     <!-- Footer -->

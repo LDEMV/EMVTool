@@ -19,5 +19,8 @@
   "license": "MIT",
   "devDependencies": {
     "vite": "^4.0.0"
+  },
+  "dependencies": {
+    "crypto-js": "^4.2.0"
   }
 }
