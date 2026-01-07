@@ -13,14 +13,14 @@
         }
 
         body {
-            background-color: #f5f7fa;
+            background-color: #F5F5F5;
             color: #333;
             line-height: 1.6;
         }
 
         /* Top Navigation */
         .header {
-            background-color: #2353ED; /* Light blue */
+            background-color: #4285F4; /* Light blue */
             color: white;
             padding: 16px 24px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -70,57 +70,119 @@
             text-decoration: none;
         }
 
-        /* Main Container */
-        .container {
-            max-width: 1200px;
-            margin: 24px auto;
-            padding: 0 16px;
-        }
-
-        /* Tab Container */
-        .tabs {
+        /* Main Container with Sidebar and Content */
+        .main-container {
             display: flex;
-            background-color: white;
-            border-radius: 8px 8px 0 0;
+            height: calc(100vh - 60px);
             overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            width: 100%;
         }
-
-        /* Tab Buttons */
-        .tab-btn {
-            padding: 12px 24px;
-            background-color: #e9f4fc; /* Very light blue */
+        
+        /* Left Sidebar */
+        .sidebar {
+            width: 260px;
+            background-color: #ffffff;
+            border-right: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        
+        .sidebar-menu {
+            padding: 8px 0;
+            flex: 1;
+        }
+        
+        /* Menu Category */
+        .menu-category {
+            margin-bottom: 4px;
+        }
+        
+        .category-header {
+            width: 100%;
+            padding: 8px 16px;
+            text-align: left;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s ease;
+        }
+        
+        .category-header:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .category-header .arrow {
+            margin-right: 8px;
+            transition: transform 0.2s ease;
+            font-size: 12px;
+        }
+        
+        .category-header.collapsed .arrow {
+            transform: rotate(-90deg);
+        }
+        
+        .category-items {
+            display: block;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .category-items.collapsed {
+            display: none;
+        }
+        
+        .menu-item {
+            width: 100%;
+            padding: 8px 16px 8px 40px;
+            text-align: left;
+            background-color: transparent;
             border: none;
             cursor: pointer;
             font-size: 14px;
             transition: all 0.2s ease;
-            flex: 1;
-            text-align: center;
-            color: #3498db; /* Blue text */
-            min-width: 0; /* Allow buttons to shrink equally */
+            color: #555;
+            display: block;
         }
-
-        .tab-btn.active {
-            background-color: #2353ED; /* Blue */
+        
+        .menu-item:hover {
+            background-color: #E8F0FE;
+            color: #3367D6;
+        }
+        
+        .menu-item.active {
+            background-color: #3367D6;
             color: white;
         }
-
-        .tab-btn:hover:not(.active) {
-            background-color: #d1e8f9; /* Lighter blue */
+        
+        /* Right Content Area */
+        .content-area {
+            flex: 1;
+            padding: 24px;
+            background-color: #F5F5F5;
+            overflow-y: auto;
+        }
+        
+        .content-area h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
         }
 
-        /* Tab Content */
-        .tab-content {
+        /* Content Section */
+        .content-section {
             background-color: white;
             padding: 24px;
-            border-radius: 0 0 8px 8px;
+            border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            min-height: 500px;
             display: none;
         }
 
-        .tab-content.active {
+        .content-section.active {
             display: block;
         }
 
@@ -176,12 +238,12 @@
         }
 
         .btn-primary {
-            background-color: #0d93ec; /* Blue */
+            background-color: #4285F4;
             color: white;
         }
 
         .btn-primary:hover {
-            background-color: #2353ED; /* Darker blue */
+            background-color: #3367D6;
         }
 
         .btn-secondary {
@@ -231,12 +293,12 @@
         }
 
         .tlv-viewer .button-group button:first-child {
-            background-color: #24ade4; /* Blue */
+            background-color: #4285F4;
             color: white;
         }
 
         .tlv-viewer .button-group button:first-child:hover {
-            background-color: #2353ED; /* Darker blue */
+            background-color: #3367D6;
         }
 
         .tlv-viewer .button-group button:not(:first-child) {
@@ -267,6 +329,44 @@
             overflow-y: auto;
         }
 
+        /* Bit Parser Sub Tabs */
+        .bit-parser-sub-tabs {
+            display: flex;
+            background-color: #E8F0FE;
+            border-radius: 4px 4px 0 0;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        
+        .bit-parser-sub-tab-btn {
+            padding: 8px 16px;
+            background-color: #E8F0FE;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s ease;
+            flex: 1;
+            text-align: center;
+            color: #5f6368;
+        }
+        
+        .bit-parser-sub-tab-btn.active {
+            background-color: #3367D6;
+            color: white;
+        }
+        
+        .bit-parser-sub-tab-btn:hover:not(.active) {
+            background-color: #D2E3FC;
+        }
+        
+        .bit-parser-sub-tab-content {
+            display: none;
+        }
+        
+        .bit-parser-sub-tab-content.active {
+            display: block;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .form-row {
@@ -276,6 +376,11 @@
 
             .tab-btn {
                 padding: 10px 12px;
+                font-size: 12px;
+            }
+            
+            .bit-parser-sub-tab-btn {
+                padding: 8px 10px;
                 font-size: 12px;
             }
 
@@ -292,7 +397,7 @@
             }
         }
     </style>
-  <script type="module" crossorigin src="/EMVTool/assets/index-c00a94c8.js"></script>
+  <script type="module" crossorigin src="/EMVTool/assets/index-914088ea.js"></script>
 </head>
 <body>
     <!-- Top Navigation -->
@@ -300,58 +405,132 @@
         <h1>EMV Toolbox</h1>
     </div>
 
-    <!-- Main Container -->
-    <div class="container">
-        <!-- Tab Buttons -->
-        <div class="tabs">
-            <button class="tab-btn active" data-tab="tlv">TLV Parser</button>
-            <button class="tab-btn" data-tab="bit">Bit Parser</button>
-            <button class="tab-btn" data-tab="string">String Tools</button>
-            <button class="tab-btn" data-tab="algorithm">Algorithms</button>
-        </div>
-
-        <!-- TLV Parser Tab -->
-        <div class="tab-content active" id="tlv">
-            <!-- TLV Viewer Component -->
-            <div id="tlv-viewer-container"></div>
-        </div>
-
-        <!-- Bit Parser Tab -->
-        <div class="tab-content" id="bit">
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="bit-tag">Tag (Hex)</label>
-                    <input type="text" id="bit-tag" placeholder="e.g.: 9F36">
+    <!-- Main Container with Sidebar and Content -->
+    <div class="main-container">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-menu">
+                <!-- Basic Calculators Category -->
+                <div class="menu-category">
+                    <button class="category-header" data-category="basic">
+                        <span class="arrow">▼</span>
+                        <span>Basic calculators</span>
+                    </button>
+                    <div class="category-items" data-category-content="basic">
+                        <button class="menu-item" data-section="des">DES calculator</button>
+                        <button class="menu-item" data-section="aes">AES calculator</button>
+                        <button class="menu-item" data-section="bitwise">Bitwise calculator</button>
+                        <button class="menu-item" data-section="base64">Base64 calculator</button>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="bit-value">Value (Hex)</label>
-                    <input type="text" id="bit-value" placeholder="e.g.: 0001">
+                
+                <!-- Hashes Category -->
+                <div class="menu-category">
+                    <button class="category-header" data-category="hashes">
+                        <span class="arrow">▼</span>
+                        <span>Hashes</span>
+                    </button>
+                    <div class="category-items" data-category-content="hashes">
+                        <button class="menu-item active" data-section="sha1">SHA-1</button>
+                        <button class="menu-item" data-section="sha256">SHA-256</button>
+                        <button class="menu-item" data-section="md5">MD5</button>
+                    </div>
+                </div>
+                
+                <!-- EMV Tools Category -->
+                <div class="menu-category">
+                    <button class="category-header" data-category="emv">
+                        <span class="arrow">▼</span>
+                        <span>EMV Tools</span>
+                    </button>
+                    <div class="category-items" data-category-content="emv">
+                        <button class="menu-item" data-section="tlv">EMV TLV Parser</button>
+                        <button class="menu-item" data-section="bit-decode">Bit Decoder</button>
+                        <button class="menu-item" data-section="bit-encode">Bit Encoder</button>
+                    </div>
+                </div>
+                
+                <!-- String Tools Category -->
+                <div class="menu-category">
+                    <button class="category-header" data-category="string">
+                        <span class="arrow">▼</span>
+                        <span>String Tools</span>
+                    </button>
+                    <div class="category-items" data-category-content="string">
+                        <button class="menu-item" data-section="string-tools">String Converter</button>
+                    </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="bit-value-full">Value Details (Hex)</label>
-                <textarea id="bit-value-full" placeholder="Enter full hex value, e.g.: 0001"></textarea>
+        </div>
+        
+        <!-- Right Content Area -->
+        <div class="content-area">
+            <!-- SHA-1 Section -->
+            <div class="content-section active" id="sha1">
+                <h2>SHA-1 Hash Calculator</h2>
+                <div id="sha1-container"></div>
             </div>
-            <div class="btn-group">
-                <button class="btn btn-primary" id="bit-parse">Parse Bits</button>
-                <button class="btn btn-secondary" id="bit-clear">Clear</button>
+            
+            <!-- SHA-256 Section -->
+            <div class="content-section" id="sha256">
+                <h2>SHA-256 Hash Calculator</h2>
+                <div id="sha256-container"></div>
             </div>
-            <div class="form-group">
-                <label>Bit Parsing Result</label>
-                <div class="output-area" id="bit-output"></div>
+            
+            <!-- MD5 Section -->
+            <div class="content-section" id="md5">
+                <h2>MD5 Hash Calculator</h2>
+                <div id="md5-container"></div>
+            </div>
+            
+            <!-- DES Section -->
+            <div class="content-section" id="des">
+                <h2>DES Calculator</h2>
+                <div id="des-container"></div>
+            </div>
+            
+            <!-- AES Section -->
+            <div class="content-section" id="aes">
+                <h2>AES Calculator</h2>
+                <div id="aes-container"></div>
+            </div>
+            
+            <!-- Bitwise Section -->
+            <div class="content-section" id="bitwise">
+                <h2>Bitwise Calculator</h2>
+                <div id="bitwise-container"></div>
+            </div>
+            
+            <!-- Base64 Section -->
+            <div class="content-section" id="base64">
+                <h2>Base64 Calculator</h2>
+                <div id="base64-container"></div>
+            </div>
+            
+            <!-- TLV Parser Section -->
+            <div class="content-section" id="tlv">
+                <h2>EMV TLV Parser</h2>
+                <div id="tlv-viewer-container"></div>
+            </div>
+
+            <!-- Bit Decode Section -->
+            <div class="content-section" id="bit-decode">
+                <h2>Bit Decoder</h2>
+                <div id="bit-decode-container"></div>
+            </div>
+            
+            <!-- Bit Encode Section -->
+            <div class="content-section" id="bit-encode">
+                <h2>Bit Encoder</h2>
+                <div id="bit-encode-container"></div>
+            </div>
+       
+            <!-- String Tools Section -->
+            <div class="content-section" id="string-tools">
+                <h2>String Tools</h2>
+                <div id="string-tools-container"></div>
             </div>
         </div>
-
-        <!-- String Tools Tab -->
-        <div class="tab-content" id="string">
-            <div id="string-tools-container"></div>
-        </div>
-
-        <!-- Algorithms Tab -->
-        <div class="tab-content" id="algorithm">
-            <div id="algorithms-tool-container"></div>
-        </div>
-
     </div>
 
     
